@@ -1,0 +1,20 @@
+name: Build Arena APK
+# Optional cloud build: put this project's files at the root of a GitHub repo, then run
+# Actions -> "Build Arena APK" -> Run workflow, and download the apk artifact.
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build with Buildozer
+        id: buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        with:
+          command: buildozer android debug
+          buildozer_version: stable
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arena-apk
+          path: ${{ steps.buildozer.outputs.filename }}
